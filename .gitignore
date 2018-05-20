@@ -1,0 +1,9 @@
+# Ignoruj pliki:
+*.exe
+*.[oa]
+*~
+
+
+# Pliki README i makefile naleza do repozytorium
+!README.txt
+!makefile
