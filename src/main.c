@@ -45,7 +45,8 @@ int main(int argc, char *argv[]) {
         set_intterrupt(int_gen);        //zapamietaj kiedy wywolac przerwanie
 
     for(;;){
-        T=getOpcode();                  //T=opcode operacji (w≥πcznie z arg. wbudowanym)
+       //do_perith(); // Dzialanie perypetiow -> TODO
+   	    T=getOpcode();                  //T=opcode operacji (w≥πcznie z arg. wbudowanym)
         doInstr(T);                     //wykonaj instrukcje
         checkInterrupt(getCounter());   //sprawdü czy trzeba wygenerowac przerwanie
 
