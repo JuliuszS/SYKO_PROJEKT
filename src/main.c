@@ -51,11 +51,15 @@ int main(int argc, char *argv[]) {
 
         if(getCounter()>=max_counter){  //czy wykonano zadan¹ liczbê cykli
             saveCPUState();
+			printf("Nacisnij ENTER by zakonczyc\n");
+			getchar();
             return 0;
         }
     }
 
     printf("Bledne wykonanie emulacji (PC=0x%08lx, T=0x%08lx)\r\n", getPC(), T);
+	printf("Nacisnij ENTER by zakonczyc\n");
+	getchar();
     saveCPUState();                     //!!! - Tu niepowinnismy siê nigdy znaleŸæ
     return -2;
 }
