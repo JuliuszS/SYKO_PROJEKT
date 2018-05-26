@@ -9,7 +9,7 @@ void F_MOV(void){
 
     printf("0x%04X[0x%04X]: MOV R%d, R%d\n", getPC(), getOpcode(), Rd, Rr);
     
-    setRegister(Rd, Rr);  //właściwe przypisanie
+    setRegister(Rd, getRegister(Rr));  //właściwe przypisanie
 
     setPC(getPC()+1);     //zwiększenie licznika rozkazów
     addCounter(1);

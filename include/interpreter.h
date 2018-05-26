@@ -60,7 +60,7 @@ void doInstr(CodeType T);
 #define RJMP_MASK NN // gotowa
 #define RJMP_VAL NN
 
-#define JMP_MASK 0x070e // gotowa
+#define JMP_MASK 0x0e0e // gotowa
 #define JMP_VAL  0x040c
 
 #define MOV_MASK  0x0c00

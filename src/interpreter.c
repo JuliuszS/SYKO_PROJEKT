@@ -69,13 +69,12 @@ void F_G1(void)
 {
 	 CodeType T=getOpcode() & 0x0FFF;
 	 
-	 if( (T & ADD_MASK) == ADD_VAL ) 
+	 if((T & ADD_MASK) == ADD_VAL ) 
 		F_ADD();	// ADD
 	 else
 		if(T == 0x0000) F_NOP(); // NOP
 	 else
 		NoInstr();
-	 
 }
 
 void F_G2(void)
@@ -87,10 +86,10 @@ void F_G2(void)
 void F_G3(void)
 {
 	 CodeType T=getOpcode() & 0x0FFF;
-	 if(T&MOV_MASK == MOV_VAL)
+	 if((T&MOV_MASK) == MOV_VAL)
 		F_MOV();
 	 else 
-		 if(T&EOR_MASK == EOR_VAL) F_EOR();
+		 if((T&EOR_MASK) == EOR_VAL) F_EOR();
 	 else
 		 NoInstr();
 }
@@ -98,19 +97,19 @@ void F_G3(void)
 void F_G10(void)
 {
 	 CodeType T=getOpcode() & 0x0FFF;
-	 if(T&JMP_MASK == JMP_VAL) 
+	 
+	 if((T & JMP_MASK) == JMP_VAL) 
 		 F_JMP();
 	 else 
-		 if(T&ICALL_MASK == ICALL_VAL);// F_ICALL();
+		 if((T&ICALL_MASK) == ICALL_VAL);// F_ICALL();
 	 else 
-		 if(T&MUL_MASK == MUL_VAL) F_MUL();
+		 if((T&MUL_MASK) == MUL_VAL) F_MUL();
 	 else 
-		 if(T&NEG_MASK == NEG_VAL) F_NEG();
+		 if((T&NEG_MASK) == NEG_VAL) F_NEG();
 	 else 
-		 if(T&ASR_MASK == ASR_VAL) F_ASR();
+		 if((T&ASR_MASK) == ASR_VAL) F_ASR();
 	 else
 		NoInstr();
-	 
 }
 
 
