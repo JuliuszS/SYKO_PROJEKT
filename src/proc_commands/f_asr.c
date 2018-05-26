@@ -5,7 +5,7 @@
 void F_ASR(void){
     CodeType T = getOpcode();
     DataType Rd = (T & 0x1F0 )>>4;                 //identyfikacja numeru rejestru
-	data = getRegister(Rd);
+	DataType data = getRegister(Rd);
 	
     printf("0x%04X[0x%04X]: ASR R%d\n", getPC(), getOpcode(), Rd);
 	// C FLAG

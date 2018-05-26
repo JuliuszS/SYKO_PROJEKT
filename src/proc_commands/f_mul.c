@@ -2,7 +2,7 @@
 #include "types.h"
 #include "mem_abs.h"
 
-void F_ADD(void){
+void F_MUL(void){
     CodeType T = getOpcode();
     DataType Rr = (T & 0x000F)|((T&0x0200)>>5);    //identyfikacja numeru rejestru arg. 1
     DataType Rd = (T & 0x1F0 )>>4;                 //identyfikacja numeru rejestru arg. 2
@@ -24,8 +24,8 @@ void F_ADD(void){
     else
         resetFlagsRegister(FLAG_Z);
 			
-    setRegister(R0, result&0x00FF);    //wynik R0
-	setRegister(R1, result&0xFF00);	  //wynik R1
+    setRegister(R0,(DataType) result&0x00FF);    //wynik R0
+	setRegister(R1,(DataType) ((result & 0xFF00)>>8));	  //wynik R1
 	
     setPC(getPC()+1);                                       //zwiększenie licznika rozkazów
     addCounter(1);

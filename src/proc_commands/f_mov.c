@@ -2,7 +2,7 @@
 #include "types.h"
 #include "mem_abs.h"
 
-void F_ADD(void){
+void F_MOV(void){
 	CodeType T = getOpcode();
     DataType Rr = (T & 0x000F)|((T&0x0200)>>5); //identyfikacja numeru rejestru arg. 1
     DataType Rd = (T & 0x1F0 )>>4;              //identyfikacja numeru rejestru arg. 2

@@ -24,6 +24,14 @@ int main(int argc, char *argv[]) {
     long int_gen=-1;
     CodeType T;                         //zmienna pomocnicza - ma przechowywaæ opcode instrukcji
 
+	if(strcmp(argv[1],"PC=0") == 0)
+		{
+			setPC(0);
+			savePC(FILE_PC);
+			printf("do_SIM : PC zostal wyzerowany\n");
+			exit(0);
+		}
+	
     loadMEMC(FILE_CODE);                //£adowanie pamiêci kodu z pliku
     loadMEMD(FILE_DATA);                //£adowanie pamiêci danych z pliku (w tym rejestrówm)
     loadPC(FILE_PC);                    //£adowanie wartoœci PC

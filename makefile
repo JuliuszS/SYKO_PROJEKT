@@ -16,8 +16,10 @@ INC = -I$(INC_DIR)
 # 		 OCZYWISCIE W *.c PLIKI ZRODLOWE  !!!
 
 CMD_OBJ = f_add.o  f_jmp.o \
-		  f_rjmp.o f_nop.o
-
+		  f_rjmp.o f_nop.o \
+		  f_asr.o  f_eor.o \
+		  f_mov.o  f_mul.o \
+		  f_neg.o
 # CELE
 
 do_sim: main.o interpreter.o interrupt.o mem_abs.o $(CMD_OBJ)

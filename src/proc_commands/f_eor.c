@@ -8,7 +8,8 @@ void F_EOR(void){
     DataType Rd = (T & 0x1F0 )>>4;                 //identyfikacja numeru rejestru arg. 2
 	
     printf("0x%04X[0x%04X]: EOR R%d, R%d\n", getPC(), getOpcode(), Rd, Rr);
-	DataType result = (getRegister(Rr)^getRegister(Rd)) % MAX_DATA_VAL);
+	
+	DataType result = ((getRegister(Rr)^getRegister(Rd)) % MAX_DATA_VAL);
 	
 	
 	// nie wieM CZ OK FLAGI SO XDXDXDXDXD

@@ -88,7 +88,7 @@ void F_G3(void)
 {
 	 CodeType T=getOpcode() & 0x0FFF;
 	 if(T&MOV_MASK == MOV_VAL)
-		;// F_MOV();
+		F_MOV();
 	 else 
 		 if(T&EOR_MASK == EOR_VAL) F_EOR();
 	 else
@@ -101,9 +101,9 @@ void F_G10(void)
 	 if(T&JMP_MASK == JMP_VAL) 
 		 F_JMP();
 	 else 
-		 if(T&ICALL_MASK == ICALL_VAL) F_ICALL();
+		 if(T&ICALL_MASK == ICALL_VAL);// F_ICALL();
 	 else 
-		 if(T&MUL_MASK == MUL_VAL);// F_MUL();
+		 if(T&MUL_MASK == MUL_VAL) F_MUL();
 	 else 
 		 if(T&NEG_MASK == NEG_VAL) F_NEG();
 	 else 
