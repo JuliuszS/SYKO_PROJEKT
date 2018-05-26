@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 // TEST PRINTFY
 
 
@@ -36,7 +36,16 @@ int main(int argc, char *argv[]) {
     dumpMEMConfiguration();
 
     if(argc>1){	                        //pierwszy parametr wywolania okresla liczbe instrukcji do wykonania
-        max_counter=strtoul(argv[1], NULL, 10);
+		if(strcmp(argv[1],"PC=0") == 0)
+			{
+				printf("---------------------------------------------------------\r\n");
+				printf("PC zostal wyzerowany\n");
+				setPC(0);
+				savePC(FILE_PC);
+				exit(0);
+			}
+
+		max_counter=strtoul(argv[1], NULL, 10);
         max_counter+=getCounter();
     }
     if(max_counter==0){
@@ -51,19 +60,10 @@ int main(int argc, char *argv[]) {
     if(int_gen>0)
         set_intterrupt(int_gen);        //zapamietaj kiedy wywolac przerwanie
 	
-	#ifdef TEST
-		printf("FOR\n");
-	#endif
-	
+	printf("---------------------- START ----------------------------\r\n");
     for(;;){
-       #ifdef TEST
-		printf("FOR_WORK\n");
-	#endif
 	   //do_perith(); // Dzialanie perypetiow -> TODO
    	    T=getOpcode();                  //T=opcode operacji (w≥πcznie z arg. wbudowanym)
-		#ifdef TEST
-			printf("FOR_WORK : %x\n",T);
-		#endif
         doInstr(T);                     //wykonaj instrukcje
         checkInterrupt(getCounter());   //sprawdü czy trzeba wygenerowac przerwanie
 

@@ -40,14 +40,14 @@ int getFlagsRegister(int b);
 // Definicje adresow i bitow rejestrow
 
 //Bity SREG
-#define FLAG_C                      0x01
-#define FLAG_Z						0x02
-#define FLAG_N						0x04
-#define FLAG_V						0x08
-#define FLAG_S						0x10
-#define FLAG_H						0x20
-#define FLAG_T						0x40
-#define FLAG_I						0x80
+#define FLAG_C                      0
+#define FLAG_Z						1
+#define FLAG_N						2
+#define FLAG_V						3
+#define FLAG_S						4
+#define FLAG_H						5
+#define FLAG_T						6
+#define FLAG_I						7
 
 //Rejestry Analog Comparatora
 

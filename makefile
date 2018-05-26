@@ -20,7 +20,7 @@ CMD_OBJ = f_add.o  f_jmp.o \
 
 # CELE
 
-syko_procesor: main.o interpreter.o interrupt.o mem_abs.o $(CMD_OBJ)
+do_sim: main.o interpreter.o interrupt.o mem_abs.o $(CMD_OBJ)
 	@echo Linkowanie syko_procesor:
 	$(CC) $^ -o $@ 
 

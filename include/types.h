@@ -7,6 +7,11 @@ typedef unsigned short              CodeType;
 typedef unsigned short              AddressType;
 typedef unsigned long               CounterType;
 
+union bits{
+	unsigned char unsign;
+	signed char sign;
+};
+
 //najwieksze wartosci 
 #define MAX_ADDRESS                 0xFFFF
 #define MAX_DATA_VAL                0xFF
@@ -19,5 +24,4 @@ typedef unsigned long               CounterType;
 #define EIO_REGISTERS_COUNT         (0x00FF-0x0060)+1
 #define MAX_EIO_REGISTERS           EIO_REGISTERS_COUNT-1
  
-
 #endif //__TYPES_H__
