@@ -2,7 +2,7 @@
 #include "types.h"
 #include "mem_abs.h"
 
-void F_ADD1(void){
+void F_ADD(void){
     DataType R1=getOpcode() & 0x000F;                        //identyfikacja numeru rejestru arg. 1
     DataType R2=(getOpcode() & 0x00F0)>>4;                  //identyfikacja numeru rejestru arg. 2
 

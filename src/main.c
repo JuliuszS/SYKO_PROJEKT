@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// TEST PRINTFY
+
+
 #include "types.h"
 #include "mem_abs.h"
 #include "interpreter.h"
@@ -25,7 +28,11 @@ int main(int argc, char *argv[]) {
     loadMEMD(FILE_DATA);                //£adowanie pamiÍci danych z pliku (w tym rejestrÛwm)
     loadPC(FILE_PC);                    //£adowanie wartoúci PC
     loadCounter(FILE_COUNTER);          //£adowanie licznika cykli
-
+	
+	#ifdef TEST
+		printf("Pamiec zaladowana\n");
+	#endif
+	
     dumpMEMConfiguration();
 
     if(argc>1){	                        //pierwszy parametr wywolania okresla liczbe instrukcji do wykonania
@@ -43,10 +50,20 @@ int main(int argc, char *argv[]) {
     }
     if(int_gen>0)
         set_intterrupt(int_gen);        //zapamietaj kiedy wywolac przerwanie
-
+	
+	#ifdef TEST
+		printf("FOR\n");
+	#endif
+	
     for(;;){
-       //do_perith(); // Dzialanie perypetiow -> TODO
+       #ifdef TEST
+		printf("FOR_WORK\n");
+	#endif
+	   //do_perith(); // Dzialanie perypetiow -> TODO
    	    T=getOpcode();                  //T=opcode operacji (w≥πcznie z arg. wbudowanym)
+		#ifdef TEST
+			printf("FOR_WORK : %x\n",T);
+		#endif
         doInstr(T);                     //wykonaj instrukcje
         checkInterrupt(getCounter());   //sprawdü czy trzeba wygenerowac przerwanie
 

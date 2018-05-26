@@ -3,14 +3,16 @@
 
 void doInstr(CodeType T);
 
-// INSTR OPCODES
+// ************** INSTR OPCODES **************
+/* !! Te instrukcje maja argumenty w 4 pierwszych bitach 
+	 dlatego sa tu oddzielnie zdefiniowane !! */
 #define LDD_SDD_MASK 0xD208
 #define ID_LDD_Z 	 0x8000
 #define ID_LDD_Y 	 0x8008  
 #define ID_STD_Z 	 0x8200 
 #define ID_STD_Y 	 0x0008  
 
-// najstarsze 4 bity opcode
+//************** najstarsze 4 bity opcode -> 16 mozliwosci **************
   
 #define ID_G1  0b0000 
 //NOP !
@@ -20,8 +22,7 @@ void doInstr(CodeType T);
 //ADC
 //SUB !
 #define ID_G3  0b0010 
-//EOR	!!! 
-
+//EOR	!!!
 //OR !
 //MOV !
 //AND !
@@ -37,7 +38,6 @@ void doInstr(CodeType T);
 //MUL 	!!!
 //NEG 	!!! 
 //ASR 	!!!
-
 //RETI - interrupt niepotrzebne
 //RET
 //CALL
@@ -52,6 +52,44 @@ void doInstr(CodeType T);
 //RCALL !!!
 #define ID_G14 0b1110
 #define ID_G15 0b1111
+
+// ************* Intr OP MASK and VAL defitions **************
+#define ADD_MASK 0x0c00
+#define ADD_VAL  0x0c00
+
+#define RJMP_MASK NN
+#define RJMP_VAL NN
+
+#define JMP_MASK 0x070e
+#define JMP_VAL  0x040c
+
+#define MOV_MASK  0x0c00
+#define MOV_VAL	  0x0c00
+//MOV !
+#define EOR_MASK 0x0c00
+#define EOR_VAL  0x0400
+//EOR	!!! 
+#define LPM_MASK
+#define LPM_VAL
+//LPM 	!!!
+#define ICALL_MASK 0x000f
+#define ICALL_VAL  0x0009
+//ICALL !!!
+#define MUL_MASK 0x0c00
+#define MUL_VAL  0x0c00
+//MUL 	!!!
+#define NEG_MASK 0x000f
+#define NEG_VAL  0x0001
+//NEG 	!!!
+#define ASR_MASK 0x000f
+#define ASR_VAL  0x0005
+//ASR 	!!!
+
+
+
+
+
+
 
 
 

@@ -15,8 +15,8 @@ INC = -I$(INC_DIR)
 # !!! MILO JAK LISTA BEDZIE AKTUALNA WSZYSTKO Z ROZSZEZENIEM *.o \
 # 		 OCZYWISCIE W *.c PLIKI ZRODLOWE  !!!
 
-CMD_OBJ = f_add1.o 	f_add2.o \
-		   f_jmp_memc.o f_jmp_rel.o
+CMD_OBJ = f_add.o  f_jmp.o \
+		  f_rjmp.o f_nop.o
 
 # CELE
 
@@ -34,5 +34,6 @@ syko_procesor: main.o interpreter.o interrupt.o mem_abs.o $(CMD_OBJ)
 	
 clean:
 	rm -f *.o
+	rm -f test/*.bak
 	
 
