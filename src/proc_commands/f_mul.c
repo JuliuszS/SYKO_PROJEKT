@@ -10,7 +10,7 @@ void F_MUL(void){
 	DataType R0 = 0;
 	DataType R1 = 1;
 	
-	CodeType result = (getRegister(Rr)*getRegister(Rd)) % MAX_DATA_VAL;
+	CodeType result = (getRegister(Rr)*getRegister(Rd));
 	
     printf("0x%04X[0x%04X]: MUL R%d, R%d\n", getPC(), getOpcode(), Rd, Rr);
 

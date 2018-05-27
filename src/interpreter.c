@@ -17,17 +17,16 @@ void F_G10(void);
 void F_G12(void);
 
 //naglowki poszczegolnych opcodow 
-void F_ADD(void);
-void F_JMP(void);
-void F_RJMP(void);
-void F_NOP(void);
-//... TO DO INSTR
-void F_MOV(void);
-void F_EOR(void);
+void F_ADD(void); // OK
+void F_JMP(void); // OK
+void F_RJMP(void); // OK
+void F_NOP(void); //OK
+void F_MOV(void); // OK
+void F_EOR(void); // OK
 void F_ICALL(void);
-void F_MUL(void);
-void F_NEG(void);
-void F_ASR(void);
+void F_MUL(void); // OK
+void F_NEG(void); // OK
+void F_ASR(void); // OK
 void F_RCALL(void);
 
 
@@ -70,9 +69,9 @@ void F_G1(void)
 	 CodeType T=getOpcode() & 0x0FFF;
 	 
 	 if((T & ADD_MASK) == ADD_VAL ) 
-		F_ADD();	// ADD
+		F_ADD();	// DZIALA
 	 else
-		if(T == 0x0000) F_NOP(); // NOP
+		if(T == 0x0000) F_NOP(); // DZIALA
 	 else
 		NoInstr();
 }
@@ -87,9 +86,9 @@ void F_G3(void)
 {
 	 CodeType T=getOpcode() & 0x0FFF;
 	 if((T&MOV_MASK) == MOV_VAL)
-		F_MOV();
+		F_MOV(); // DZIALA
 	 else 
-		 if((T&EOR_MASK) == EOR_VAL) F_EOR();
+		 if((T&EOR_MASK) == EOR_VAL) F_EOR(); // DZIALA
 	 else
 		 NoInstr();
 }
@@ -97,19 +96,19 @@ void F_G3(void)
 void F_G10(void)
 {
 	 CodeType T=getOpcode() & 0x0FFF;
-	 
-	 if((T & JMP_MASK) == JMP_VAL) 
-		 F_JMP();
+
+		if((T & JMP_MASK) == JMP_VAL) 
+		 F_JMP(); // DZIALA
 	 else 
 		 if((T&ICALL_MASK) == ICALL_VAL);// F_ICALL();
 	 else 
-		 if((T&MUL_MASK) == MUL_VAL) F_MUL();
+		 if((T&MUL_MASK) == MUL_VAL) F_MUL(); // DZIALA
 	 else 
-		 if((T&NEG_MASK) == NEG_VAL) F_NEG();
+		 if((T&NEG_MASK) == NEG_VAL) F_NEG(); // DZIALA
 	 else 
-		 if((T&ASR_MASK) == ASR_VAL) F_ASR();
+		 if((T&ASR_MASK) == ASR_VAL) F_ASR(); // DZIALA
 	 else
-		NoInstr();
+		 NoInstr();
 }
 
 

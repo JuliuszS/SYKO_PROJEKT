@@ -123,12 +123,56 @@ CodeType getMEMC(AddressType p){
 DataType getMEMD(AddressType p){
     return MEMD[p];
 }
+
+void setMEMD(DataType d,AddressType p){
+    MEMD[p] = d;
+}
+
 void setPC(AddressType v){
     PC=v;
 }
+
+void setSP(AddressType v){
+    setIORegister(A_SPL, 0x00ff&v );
+	setIORegister(A_SPH, (0xff00&v)>>8 );
+}
+
 AddressType getPC(void){
     return PC;
 }
+
+AddressType getSP(void){
+    AddressType SP = 0; 
+	SP |= 0x00ff& getIORegister(A_SPL);
+	SP |= 0xff00&(getIORegister(A_SPH)<<8);
+	
+	return SP;
+}
+
+DataType getPOP(void)
+{
+	setSP(getSP()-1);
+	return	getMEMD(getSP());
+}
+
+void setPUSH(DataType d)
+{
+	setMEMD(d,getSP());
+	setSP(getSP()+1);
+}
+
+void setPUSH_ADDRES(AddressType adr){
+	setPUSH(0x00ff&adr); 
+	setPUSH((0xff00&adr)>>8);
+}
+
+AddressType getPOP_ADDRES(void){
+	AddressType adr = 0;
+	adr |= getPOP()<<8; 
+	adr |= getPOP();
+	return adr;
+}
+
 CodeType getOpcode(void){
     return getMEMC(PC);
 }
@@ -141,9 +185,19 @@ void addCounter(CounterType n){
 DataType getRegister(int n){
     return GEN_REG[n];
 }
+
+DataType getIORegister(int n){
+    return IO_REG[n];
+}
+
 void setRegister(int n, DataType v){
     GEN_REG[n]=v;
 }
+
+void setIORegister(int n, DataType v){
+    IO_REG[n]=v;
+}
+
 void setFlagsRegister(int b){
     FLAGS = FLAGS | (1<<b);
 }

@@ -6,7 +6,7 @@ void F_NEG(void){
     CodeType T = getOpcode();
     DataType Rd = (T & 0x1F0 )>>4;      //identyfikacja numeru rejestru arg. 2
 	
-    printf("0x%04X[0x%04X]: NEG R%d", getPC(), getOpcode(), Rd);
+    printf("0x%04X[0x%04X]: NEG R%d\n", getPC(), getOpcode(), Rd);
 	
 	union bits result;
 	result.sign	= 0 - (signed char)getRegister(Rd);

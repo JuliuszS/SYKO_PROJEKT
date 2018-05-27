@@ -48,7 +48,6 @@ int main(int argc, char *argv[]) {
     if(argc>1){	                        //pierwszy parametr wywolania okresla liczbe instrukcji do wykonania
 		if(strcmp(argv[1],"PC=0") == 0)
 			{
-				printf("---------------------------------------------------------\r\n");
 				printf("PC zostal wyzerowany\n");
 				setPC(0);
 				savePC(FILE_PC);
@@ -61,7 +60,8 @@ int main(int argc, char *argv[]) {
     if(max_counter==0){
         max_counter=getCounter()+1;     //nie podanie argumentu wywolania lub b³edne jego podanie - ustala wykonanie jednego cyklu
     }
-    if(argc>2){                         //drugi parametr wywolania okresla liczbe instrukcji po ktorych ma byc wygenerowane przerwanie
+    if(argc>2){        
+	//drugi parametr wywolania okresla liczbe instrukcji po ktorych ma byc wygenerowane przerwanie
         int_gen=strtoul(argv[2], NULL, 10);
     }
     if(int_gen==0){

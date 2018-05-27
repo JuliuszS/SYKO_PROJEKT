@@ -49,6 +49,10 @@ int getFlagsRegister(int b);
 #define FLAG_T						6
 #define FLAG_I						7
 
+// Stack pointer A_SPH A_SPL
+#define A_SPL 0x3A
+#define A_SPH 0x3B
+
 //Rejestry Analog Comparatora
 
 #define	ACSR_ADDRESS	0x50//Analog Comparator Control and Status Register
