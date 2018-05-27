@@ -34,10 +34,10 @@ void doInstr(CodeType T);
 #define ID_G9  0b1000
 #define ID_G10 0b1001
 	//LPM 	!!!
-	//ICALL !!! //dec
-	//MUL 	!!! //dec
-	//NEG 	!!! //dec
-	//ASR 	!!! //dec
+	//ICALL !!! 
+	//MUL 	!!! 
+	//NEG 	!!! 
+	//ASR 	!!! 
 	//RETI - interrupt niepotrzebne
 	//RET
 	//CALL
@@ -47,6 +47,7 @@ void doInstr(CodeType T);
 	//PUSH
 	//POP
 #define ID_G11 0b1011
+	// OUT
 #define ID_G12 0b1100
 #define ID_G13 0b1101
 	//RCALL !!! //dec
@@ -72,8 +73,8 @@ void doInstr(CodeType T);
 #define LPM_MASK
 #define LPM_VAL
 
-#define ICALL_MASK 0x000f
-#define ICALL_VAL  0x0009
+#define ICALL_MASK 0x0fff
+#define ICALL_VAL  0x0509
 
 #define MUL_MASK 0x0c00
 #define MUL_VAL  0x0c00
@@ -83,6 +84,12 @@ void doInstr(CodeType T);
 
 #define ASR_MASK 0x000f
 #define ASR_VAL  0x0005
+
+#define OUT_MASK 0x0800
+#define OUT_VAL  0x0800
+
+#define LDI_MASK NN
+#define LDI_VAL  NN
 
 
 

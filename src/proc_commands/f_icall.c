@@ -4,7 +4,7 @@
 
 void F_ICALL(void){
     CodeType T = getOpcode();
-    AddresType Z = ( getRegister(31)<<8 ) | getRegister(30);
+    CodeType Z = ( getRegister(31)<<8 ) | getRegister(30);
 	
     printf("0x%04X[0x%04X]: ICALL \n", getPC(), getOpcode());
 		

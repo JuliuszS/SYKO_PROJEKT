@@ -17,16 +17,20 @@ void F_G10(void);
 void F_G12(void);
 
 //naglowki poszczegolnych opcodow 
-void F_ADD(void); // OK
-void F_JMP(void); // OK
+void F_ADD(void);  // OK
+void F_JMP(void);  // OK
 void F_RJMP(void); // OK
-void F_NOP(void); //OK
-void F_MOV(void); // OK
-void F_EOR(void); // OK
+void F_NOP(void);  // OK
+void F_MOV(void);  // OK
+void F_EOR(void);  // OK
+
+void F_LDI(void);
+void F_OUT(void);  
+
 void F_ICALL(void);
-void F_MUL(void); // OK
-void F_NEG(void); // OK
-void F_ASR(void); // OK
+void F_MUL(void);  // OK
+void F_NEG(void);  // OK
+void F_ASR(void);  // OK
 void F_RCALL(void);
 
 
@@ -44,12 +48,18 @@ void doInstr(CodeType T){
         case ID_G10:        
             F_G10();
             break;
+		case ID_G11:
+			F_G11();
+			break;
 		case ID_G12:
 			F_RJMP();
 			break;
         case ID_G13:   		
 			//F_RCALL();
             break;	
+		case ID_G14:
+			F_LDI();
+			break;
         default:
 			printf("doInstr: ");
 			NoInstr(); // exit  
@@ -100,7 +110,7 @@ void F_G10(void)
 		if((T & JMP_MASK) == JMP_VAL) 
 		 F_JMP(); // DZIALA
 	 else 
-		 if((T&ICALL_MASK) == ICALL_VAL);// F_ICALL();
+		 if((T&ICALL_MASK) == ICALL_VAL) F_ICALL();// F_ICALL();
 	 else 
 		 if((T&MUL_MASK) == MUL_VAL) F_MUL(); // DZIALA
 	 else 
@@ -111,6 +121,16 @@ void F_G10(void)
 		 NoInstr();
 }
 
+void F_G11(void)
+{
+		CodeType T=getOpcode() & 0x0FFF;
+		
+		if((T&OUT_MASK)== OUT_VAL) 
+			F_OUT();
+		else 
+			NoInstr();
+	
+}
 
 
 

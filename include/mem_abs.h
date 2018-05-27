@@ -1,5 +1,6 @@
 #ifndef __MEM_ABS_H__
 #define __MEM_ABS_H__
+#include "types.h"
 
 void dumpMEMConfiguration(void);
 
@@ -36,6 +37,26 @@ void setFlagsRegister(int b);
 void resetFlagsRegister(int b);
 int getFlagsRegister(int b);
 
+// Zapis do pamieci
+void setMEMD(DataType d,AddressType p);
+
+// Stack Pionter
+void setSP(AddressType v);
+AddressType getSP(void);
+
+// Operacje na stosie
+DataType getPOP(void);
+void setPUSH(DataType d);
+
+// Operacje na stosie zapis adresu(2 bajty)
+void setPUSH_ADDRES(AddressType adr);
+AddressType getPOP_ADDRES(void);
+
+// Operacje na rejestrach IO
+DataType getIORegister(int n);
+void setIORegister(int n, DataType v);
+
+//********************************************************
 
 // Definicje adresow i bitow rejestrow
 
@@ -70,4 +91,29 @@ int getFlagsRegister(int b);
 	#define AIN1D 0x01
 
 #endif //__MEM_ABS_H__
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

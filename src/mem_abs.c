@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+
+#include "mem_abs.h"
 #include "types.h"
 
 //Linux compliance
@@ -143,8 +145,8 @@ AddressType getPC(void){
 
 AddressType getSP(void){
     AddressType SP = 0; 
-	SP |= 0x00ff& getIORegister(A_SPL);
-	SP |= 0xff00&(getIORegister(A_SPH)<<8);
+	SP |= 0x00ff & getIORegister(A_SPL);
+	SP |= 0xff00 &(getIORegister(A_SPH)<<8);
 	
 	return SP;
 }
