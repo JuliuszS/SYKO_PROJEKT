@@ -1,3 +1,11 @@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+Wersja do testów, do sprawozdania. Zaimplementowane zosta³y wszystkie instrukcje z tresci zadania oraz dodatkowe (lista poni¿ej), powinny dzia³aæ poprawnie.
+
+Zaimplementowane instrukcje:
+ADD, JMP, RJMP, NOP, MOV, EOR, LDI, OUT, ICALL, MUL, NEG, ASR, RCALL
+
+Do zaimplementowania zosta³ tylko komparator.
 
 
 #################### TRESC ZADANIA ###########################

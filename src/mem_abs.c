@@ -153,14 +153,14 @@ AddressType getSP(void){
 
 DataType getPOP(void)
 {
-	setSP(getSP()-1);
+	setSP(getSP()+1);
 	return	getMEMD(getSP());
 }
 
 void setPUSH(DataType d)
 {
 	setMEMD(d,getSP());
-	setSP(getSP()+1);
+	setSP(getSP()-1);
 }
 
 void setPUSH_ADDRES(AddressType adr){

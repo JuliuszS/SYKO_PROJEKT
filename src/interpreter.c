@@ -25,10 +25,10 @@ void F_NOP(void);  // OK
 void F_MOV(void);  // OK
 void F_EOR(void);  // OK
 
-void F_LDI(void);
-void F_OUT(void);  
+void F_LDI(void); // OK
+void F_OUT(void);  // OK
 
-void F_ICALL(void);
+void F_ICALL(void); // OK
 void F_MUL(void);  // OK
 void F_NEG(void);  // OK
 void F_ASR(void);  // OK
@@ -56,7 +56,7 @@ void doInstr(CodeType T){
 			F_RJMP();
 			break;
         case ID_G13:   		
-			//F_RCALL();
+			F_RCALL();
             break;	
 		case ID_G14:
 			F_LDI();

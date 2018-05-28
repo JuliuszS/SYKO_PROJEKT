@@ -12,6 +12,12 @@ union bits{
 	signed char sign;
 };
 
+union word_bits{
+	unsigned short unsign;
+	signed short sign;
+};
+
+
 //najwieksze wartosci 
 #define MAX_ADDRESS                 0xFFFF
 #define MAX_DATA_VAL                0xFF
