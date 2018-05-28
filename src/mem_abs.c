@@ -135,8 +135,8 @@ void setPC(AddressType v){
 }
 
 void setSP(AddressType v){
-    setIORegister(A_SPL, 0x00ff&v );
-	setIORegister(A_SPH, (0xff00&v)>>8 );
+    setIORegister(A_SPL, (DataType)(0x00ff&v) );
+	setIORegister(A_SPH, (DataType)((0xff00&v)>>8) );
 }
 
 AddressType getPC(void){
@@ -144,9 +144,9 @@ AddressType getPC(void){
 }
 
 AddressType getSP(void){
-    AddressType SP = 0; 
-	SP |= 0x00ff & getIORegister(A_SPL);
-	SP |= 0xff00 &(getIORegister(A_SPH)<<8);
+    AddressType SP = 0x0000; 
+	SP |= (AddressType)(0x00ff & getIORegister(A_SPL));
+	SP |= 0xff00 &(((AddressType)getIORegister(A_SPH))<<8);
 	
 	return SP;
 }
@@ -164,8 +164,8 @@ void setPUSH(DataType d)
 }
 
 void setPUSH_ADDRES(AddressType adr){
-	setPUSH(0x00ff&adr); 
-	setPUSH((0xff00&adr)>>8);
+	setPUSH( (DataType)(0x00ff&adr) ); 
+	setPUSH( (DataType) ((0xff00&adr)>>8) );
 }
 
 AddressType getPOP_ADDRES(void){

@@ -71,8 +71,8 @@ void setIORegister(int n, DataType v);
 #define FLAG_I						7
 
 // Stack pointer A_SPH A_SPL
-#define A_SPL 0x3A
-#define A_SPH 0x3B
+#define A_SPL 0x3D
+#define A_SPH 0x3E
 
 //Rejestry Analog Comparatora
 

@@ -14,6 +14,7 @@ void F_G1(void);
 void F_G2(void);
 void F_G3(void);
 void F_G10(void);
+void F_G11(void);
 void F_G12(void);
 
 //naglowki poszczegolnych opcodow 
