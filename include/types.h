@@ -7,6 +7,12 @@ typedef unsigned short              CodeType;
 typedef unsigned short              AddressType;
 typedef unsigned long               CounterType;
 
+struct PinState{
+	int pin_number;
+	float pin_val;
+	CounterType change_time;
+};
+
 union bits{
 	unsigned char unsign;
 	signed char sign;

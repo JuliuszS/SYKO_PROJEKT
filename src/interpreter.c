@@ -8,6 +8,7 @@
 
 // Nieznana instrukcja
 void NoInstr(void);
+void saveCPUState(void);
 
 // deklaracje F_Gx()
 void F_G1(void);
@@ -17,21 +18,19 @@ void F_G10(void);
 void F_G11(void);
 void F_G12(void);
 
-//naglowki poszczegolnych opcodow 
-void F_ADD(void);  // OK
-void F_JMP(void);  // OK
-void F_RJMP(void); // OK
-void F_NOP(void);  // OK
-void F_MOV(void);  // OK
-void F_EOR(void);  // OK
-
-void F_LDI(void); // OK
-void F_OUT(void);  // OK
-
-void F_ICALL(void); // OK
-void F_MUL(void);  // OK
-void F_NEG(void);  // OK
-void F_ASR(void);  // OK
+// deklaracje instrukcji
+void F_ADD(void);
+void F_JMP(void);
+void F_RJMP(void);
+void F_NOP(void);
+void F_MOV(void);
+void F_EOR(void);
+void F_LDI(void);
+void F_OUT(void);
+void F_ICALL(void);
+void F_MUL(void);
+void F_NEG(void);
+void F_ASR(void);
 void F_RCALL(void);
 
 
@@ -111,13 +110,13 @@ void F_G10(void)
 		if((T & JMP_MASK) == JMP_VAL) 
 		 F_JMP(); // DZIALA
 	 else 
-		 if((T&ICALL_MASK) == ICALL_VAL) F_ICALL();// F_ICALL();
+		 if((T&ICALL_MASK) == ICALL_VAL) F_ICALL();
 	 else 
-		 if((T&MUL_MASK) == MUL_VAL) F_MUL(); // DZIALA
+		 if((T&MUL_MASK) == MUL_VAL) F_MUL();
 	 else 
-		 if((T&NEG_MASK) == NEG_VAL) F_NEG(); // DZIALA
+		 if((T&NEG_MASK) == NEG_VAL) F_NEG();
 	 else 
-		 if((T&ASR_MASK) == ASR_VAL) F_ASR(); // DZIALA
+		 if((T&ASR_MASK) == ASR_VAL) F_ASR();
 	 else
 		 NoInstr();
 }

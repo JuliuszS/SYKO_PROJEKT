@@ -35,6 +35,13 @@ void dumpMEMConfiguration(void){
     printf("IO_REGISTERS_IN_MEMD_OFFSET:  0x%08x\n", IO_REGISTERS_IN_MEMD_OFFSET);
     printf("EIO_REGISTERS_IN_MEMD_OFFSET: 0x%08x\n", EIO_REGISTERS_IN_MEMD_OFFSET);
 }
+
+void saveCPUState(void){
+    saveMEMD(FILE_DATA);        //Zapisz zawartoœæ pamiêci danych do pliku
+    savePC(FILE_PC);            //Zapisz wartoœc PC
+    saveCounter(FILE_COUNTER);  //Zapisz liczbe wykonanych cykli
+}
+
 void loadPC(char *file){          //£adowanie nowej wartoœci PC
     int file_ptr;
     AddressType tPC;
@@ -181,6 +188,11 @@ CodeType getOpcode(void){
 CounterType getCounter(void){
     return counter;
 }
+
+void setCounter(CounterType new_val){
+    counter = new_val;
+}
+
 void addCounter(CounterType n){
     counter+=n;
 }

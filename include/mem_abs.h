@@ -2,8 +2,15 @@
 #define __MEM_ABS_H__
 #include "types.h"
 
-void dumpMEMConfiguration(void);
 
+#define FILE_COUNTER            "test/file_counter.bin"
+#define FILE_PC                 "test/file_pc.bin"
+#define FILE_DATA               "test/file_data.bin"
+#define FILE_CODE               "test/file_code.bin"
+
+
+void dumpMEMConfiguration(void);
+void saveCPUState(void);
 void loadCounter(char *file);
 
 void loadPC(char *file);
@@ -26,6 +33,7 @@ CodeType getOpcode(void);
 
 // Operacje na liczniku symulacji
 CounterType getCounter(void);
+void setCounter(CounterType new_val);
 void addCounter(CounterType n);
 
 // Pobranie i zapis do rejestru

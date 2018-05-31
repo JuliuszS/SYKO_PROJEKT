@@ -1,35 +1,51 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-// TEST PRINTFY
 
 
 #include "types.h"
 #include "mem_abs.h"
 #include "interpreter.h"
 #include "interrupt.h"
+#include "periph.h"
 
 #define FILE_COUNTER            "test/file_counter.bin"
 #define FILE_PC                 "test/file_pc.bin"
 #define FILE_DATA               "test/file_data.bin"
 #define FILE_CODE               "test/file_code.bin"
+#define FILE_PERIPH 			"test/file_periph.txt"
 
-void saveCPUState(void){
-    saveMEMD(FILE_DATA);        //Zapisz zawartoœæ pamiêci danych do pliku
-    savePC(FILE_PC);            //Zapisz wartoœc PC
-    saveCounter(FILE_COUNTER);  //Zapisz liczbe wykonanych cykli
-}
+
 int main(int argc, char *argv[]) {
     long counter=0, max_counter=0;      //liczba wykonanych instrukcji i zadana liczba instrukcji do wykonania
     long int_gen=-1;
     CodeType T;                         //zmienna pomocnicza - ma przechowywaæ opcode instrukcji
 
 	if(argc>1){
+		if(strcmp(argv[1],"SIM=0") == 0)
+			{
+			 setPC(0);
+			 savePC(FILE_PC);
+			 printf("do_SIM : PC zostal wyzerowany\n");
+			 
+			 setCounter(0);
+			 saveCounter(FILE_COUNTER);	
+			 printf("do_SIM : Licznik cykli zostal wyzerowany\n");
+			 
+			 exit(0);
+			}
 		if(strcmp(argv[1],"PC=0") == 0)
 			{
 			 setPC(0);
 			 savePC(FILE_PC);
 			 printf("do_SIM : PC zostal wyzerowany\n");
+			 exit(0);
+			}
+		if(strcmp(argv[1],"COUNTER=0") == 0)
+			{
+			 setCounter(0);
+			 saveCounter(FILE_COUNTER);	
+			 printf("do_SIM : Licznik cykli zosta³ wyzerowany\n");
 			 exit(0);
 			}
 	}
@@ -38,22 +54,15 @@ int main(int argc, char *argv[]) {
     loadMEMD(FILE_DATA);                //£adowanie pamiêci danych z pliku (w tym rejestrówm)
     loadPC(FILE_PC);                    //£adowanie wartoœci PC
     loadCounter(FILE_COUNTER);          //£adowanie licznika cykli
-	
-	#ifdef TEST
-		printf("Pamiec zaladowana\n");
-	#endif
-	
-    dumpMEMConfiguration();
+	loadPeriph(FILE_PERIPH);			//£adowanie wartoœci napiêcia na pinach
+	/*
+	printf("--------- Periph TAB -------------\n");
+	printfPeriphTab();
+	printf("--------- Periph END -------------\n");
+    */
+	dumpMEMConfiguration();
 
     if(argc>1){	                        //pierwszy parametr wywolania okresla liczbe instrukcji do wykonania
-		if(strcmp(argv[1],"PC=0") == 0)
-			{
-				printf("PC zostal wyzerowany\n");
-				setPC(0);
-				savePC(FILE_PC);
-				exit(0);
-			}
-
 		max_counter=strtoul(argv[1], NULL, 10);
         max_counter+=getCounter();
     }
@@ -70,16 +79,18 @@ int main(int argc, char *argv[]) {
     if(int_gen>0)
         set_intterrupt(int_gen);        //zapamietaj kiedy wywolac przerwanie
 	
+		
 	printf("---------------------- START ----------------------------\r\n");
     for(;;){
-	   //do_perith(); // Dzialanie perypetiow -> TODO
+	   //do_periph(); // Dzialanie perypetiow -> TODO
    	    T=getOpcode();                  //T=opcode operacji (w³¹cznie z arg. wbudowanym)
         doInstr(T);                     //wykonaj instrukcje
         checkInterrupt(getCounter());   //sprawdŸ czy trzeba wygenerowac przerwanie
 
         if(getCounter()>=max_counter){  //czy wykonano zadan¹ liczbê cykli
-            saveCPUState();
-			printf("Nacisnij ENTER by zakonczyc\n");
+			saveCPUState();
+			periphFree();	
+			printf("Nacisnij ENTER by zakonczyc: return 0\n");
 			getchar();
             return 0;
         }
@@ -91,3 +102,4 @@ int main(int argc, char *argv[]) {
     saveCPUState();                     //!!! - Tu niepowinnismy siê nigdy znaleŸæ
     return -2;
 }
+
