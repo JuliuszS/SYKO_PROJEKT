@@ -14,6 +14,7 @@
 #define FILE_DATA               "test/file_data.bin"
 #define FILE_CODE               "test/file_code.bin"
 #define FILE_PERIPH 			"test/file_periph.txt"
+#define FILE_PERIPH_CURRENT		"test/file_current_p.bin"
 
 
 int main(int argc, char *argv[]) {
@@ -21,7 +22,6 @@ int main(int argc, char *argv[]) {
     long int_gen=-1;
     CodeType T;                         //zmienna pomocnicza - ma przechowywaæ opcode instrukcji
 
-	
 //**************************************************
 // Pomocnicze instrukcje resetuj¹ce pliki PC i COUNTER
 	if(argc>1){
@@ -59,14 +59,17 @@ int main(int argc, char *argv[]) {
     loadPC(FILE_PC);                    //£adowanie wartoœci PC
     loadCounter(FILE_COUNTER);          //£adowanie licznika cykli
 	loadPeriph(FILE_PERIPH);			//£adowanie wartoœci napiêcia na pinach
+	loadPeriphCurrent(FILE_PERIPH_CURRENT);
+	
+	
+	dumpMEMConfiguration();
 	/*
 	printf("--------- Periph TAB -------------\n");
 	printfPeriphTab();
+	printfPinsCurrentValTab();
 	printf("--------- Periph END -------------\n");
-    */
-	dumpMEMConfiguration();
-
-	
+   */
+ 	
 //**************************************************
 // Argumenty wywo³anie symulacji  
 	if(argc>1)
@@ -92,7 +95,7 @@ int main(int argc, char *argv[]) {
 	 
 //**************************************************
 // Rozpoczêcie pracy	
-	printf("---------------------- START ----------------------------\r\n");
+	printf("\n--- START ---\r\n");
     for(;;)
 	{
 		do_periph(getCounter()); // Dzia³anie modu³ów sprzêtowych 
@@ -102,7 +105,9 @@ int main(int argc, char *argv[]) {
 
 		if(getCounter()>=max_counter)  // czy wykonano zadan¹ liczbê cykli
 		{  
+			printf("---  END  ---\r\n");
 			saveCPUState();
+			savePeriphCurrent(FILE_PERIPH_CURRENT); // zapisz stan pinow
 			periphFree();	
 			printf("Nacisnij ENTER by zakonczyc: return 0\n");
 			getchar();
@@ -113,6 +118,7 @@ int main(int argc, char *argv[]) {
     printf("Bledne wykonanie emulacji (PC=0x%08lx, T=0x%08lx)\r\n", getPC(), T);
 	printf("Nacisnij ENTER by zakonczyc\n");
 	getchar();
+	savePeriphCurrent(FILE_PERIPH_CURRENT); // zapisz stan pinow
     saveCPUState();                     //!!! - Tu niepowinnismy siê nigdy znaleŸæ
     return -2;
 }

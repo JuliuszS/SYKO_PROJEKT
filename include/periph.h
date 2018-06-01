@@ -5,9 +5,36 @@
 
 #define NUMBERS_OF_PINS 38
 
+//***********************************
+//
+// Definicje numerów pinów
+//
+//***********************************
+// Założyona obudowa 28-pin PDIP
+
+#define AIN0 12
+#define AIN1 13
+
+#define ADC0 23
+#define ADC1 24
+#define ADC2 25
+#define ADC3 26
+#define ADC4 27
+#define ADC5 28
+// BRAK W PDIP 28
+#define ADC6 0
+#define ADC7 0
+
+
 // Ładowanie wartości napięcia na pinach
+void loadPeriphCurrent(char *file);
+void savePeriphCurrent(char *file);
 void loadPeriph(char *file);
 void printfPeriphTab(void);
+
+// Pobierz napiecie na pinie
+float getPinVal(int pin_number); 
+
 // Działanie sprzętowych modułów
 void do_periph(CounterType time);
 void do_AnalogComparator(void);

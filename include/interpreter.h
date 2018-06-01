@@ -67,6 +67,12 @@ void doInstr(CodeType T);
 #define OUT_MASK 0x0800
 #define OUT_VAL  0x0800
 
+#define STS_MASK 0x0E0F
+#define STS_VAL  0x0200
+
+#define IN_MASK 0x0800
+#define IN_VAL 0x0000
+
 #define LDI_MASK NN
 #define LDI_VAL  NN
 

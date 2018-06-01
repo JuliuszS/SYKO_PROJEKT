@@ -3,6 +3,7 @@
 #include <fcntl.h>
 
 #include "mem_abs.h"
+#include "periph.h"
 #include "types.h"
 
 //Linux compliance
@@ -71,7 +72,7 @@ void dumpMEMConfiguration(void){
 //*****************************************************
 
 void saveCPUState(void){
-    saveMEMD(FILE_DATA);        //Zapisz zawartoœæ pamiêci danych do pliku
+	saveMEMD(FILE_DATA);        //Zapisz zawartoœæ pamiêci danych do pliku
     savePC(FILE_PC);            //Zapisz wartoœc PC
     saveCounter(FILE_COUNTER);  //Zapisz liczbe wykonanych cykli
 }

@@ -19,8 +19,6 @@
 	jest przechowywany w oddzielnej tablicy
 */
 
-
-
 //**********************************************
 //
 // DEKLARACJA STOSU I TABLICY STANU
@@ -33,6 +31,20 @@ float PinsCurrentVal[NUMBERS_OF_PINS];
 struct PinState * PinsTabChange = NULL;
 int PinsTabStack;
 int PinsTabSize;
+
+//**********************************************
+//
+// Pobierz napiecie na pinie
+//
+//**********************************************
+float getPinVal(int pin_number){
+	if( (pin_number > NUMBERS_OF_PINS) || (pin_number <= 0) )
+	{
+			printf("Error PinVal: pin_number = %d",pin_number);
+			exit(-1);
+	}
+	return	PinsCurrentVal[pin_number-1];
+}
 
 //**********************************************
 //
@@ -146,7 +158,7 @@ int time_compare( const void * el_1, const void * el_2)
 
 //**********************************************
 //
-// Laduj dane z pliku
+// Laduj zmiany stanów  z pliku
 //
 //**********************************************
 
@@ -154,7 +166,7 @@ void loadPeriph(char *filename){
 	printf("Read periph file %s\n",filename);
 	// Otworz plik
 	FILE *file_ptr = fopen(filename, "r");
-	if(file_ptr == NULL) loadPeriph_ERROR("file no open");
+	if(file_ptr == NULL) loadPeriph_ERROR("file no open\n");
 
 	// Miejsce na stos periph
 	periphNewPtr(malloc(sizeof(struct PinState)));
@@ -175,6 +187,41 @@ void loadPeriph(char *filename){
 	fclose(file_ptr);
 	// Sortuj stos wg czasu
 	periphStackTimeSort();
+}
+
+
+//**********************************************
+//
+// laduj obecny stan pinow
+//
+//**********************************************
+void loadPeriphCurrent(char *file){       
+    int file_ptr;
+    file_ptr=open(file, O_RDWR | O_BINARY, 0);
+    if(file_ptr<0){
+        printf("Periph Current file not found (%s)!\n", file);
+        exit(-4);
+    }    
+    lseek(file_ptr, 0, SEEK_SET);
+    printf("Read Periph (%s) file in %dbytes\n", file, read(file_ptr, (void*)PinsCurrentVal, sizeof(float)*(NUMBERS_OF_PINS+1)));
+    close(file_ptr);
+}
+
+//**********************************************
+//
+// laduj stan pinow
+//
+//**********************************************
+void savePeriphCurrent(char *file){        
+    int file_ptr;
+    file_ptr=open(file, O_RDWR | O_BINARY, 0);
+    if(file_ptr<0){
+        printf("Periph Current file cannot open to write (%s)!\n", file);
+        exit(-6);
+    }    
+    lseek(file_ptr, 0, SEEK_SET);
+    printf("Periph Current file (%s) in %dbytes\n", file, write(file_ptr, (void*)PinsCurrentVal, sizeof(float)*(NUMBERS_OF_PINS)));
+    close(file_ptr);
 }
 
 //**********************************************
@@ -215,9 +262,20 @@ struct PinState strtoPinStruct(char* line){
 
  void printfPeriphTab(void){	
 	int i = 0;
-	for(i = 0; PinsTabStack != i ;i++)
+	printf("StackPtrVal = %d\n",PinsTabStack);
+	for(i = 0; PinsTabStack > i ;i++)
 	 {	 
 	printf("%d-> %d: %d, %f\n",i,  PinsTabChange[i].change_time  ,  PinsTabChange[i].pin_number  ,  PinsTabChange[i].pin_val  ); 		 
+	 }
+ }
+ 
+ 
+ void printfPinsCurrentValTab(){	
+	int i = 0;
+	printf("PinsCurrentVal:\nPIN -> VAL\n");
+	for(i = 0; NUMBERS_OF_PINS > i ;i++)
+	 {	 
+		printf("%d -> %f\n",i,PinsCurrentVal[i]); 		 
 	 }
  }
  
@@ -248,15 +306,14 @@ void do_periph(const CounterType time){
 		// Pobieranie nowych stanów na pinach
 		while(time == getFirstElementTime())
 		{
+			if(periphIsStackEmpty()) break; // Gdy stos sie opróżnił
 			pin_ch = periphPULL();
-			PinsCurrentVal[pin_ch.pin_number] = pin_ch.pin_val;
+			PinsCurrentVal[(pin_ch.pin_number)-1] = pin_ch.pin_val;
 		}
 	}
 	
 	// **** Działanie sprzętu ****
 	do_AnalogComparator();		
-
-	
 	}
 
 //******************************************
@@ -264,7 +321,68 @@ void do_periph(const CounterType time){
 // Symulacja działanie Analog Comparatora
 //
 //******************************************
-void do_AnalogComparator(void){0;}
+void do_AnalogComparator(void){
+	
+	DataType ACSR = getIORegister(A_ACSR_ADDRESS);
+	DataType ADCSRB = getMEMD(ADCSRB_ADDRESS);
+	DataType ADCSRA = getMEMD(ADCSRA_ADDRESS);
+	DataType DIDR1 = getMEMD(DIDR1_ADDRESS);
+	
+	float IN1, IN2;
+	
+	if((ACSR&ACD) == 0){// Czy moduł wyłączony?
+		// IN 1
+		if(ACSR&ACBG) IN1 = 0; // Bandgap voltage
+		else IN1 = getPinVal(AIN0); // PIN AIN0
+		// IN 2
+		if(ADCSRB&ACME)
+		{
+			if(ADCSRA&ADEN) 
+				IN2 = getPinVal(AIN1);
+			else
+			{
+				DataType MUX = 0x07&getMEMD(ADMUX_ADDRESS);
+				switch(MUX){
+					case 0x00:
+						IN2 = getPinVal(ADC0);
+						break;
+					case 0x01:
+						IN2 = getPinVal(ADC1);
+						break;
+					case 0x02:
+						IN2 = getPinVal(ADC2);
+						break;
+					case 0x03:
+						IN2 = getPinVal(ADC3);
+						break;
+					case 0x04:
+						IN2 = getPinVal(ADC4);
+						break;
+					case 0x05:
+						IN2 = getPinVal(ADC5);
+						break;
+					case 0x06:
+						IN2 = getPinVal(ADC6);
+						break;
+					case 0x07:
+						IN2 = getPinVal(ADC7);
+				}
+			}
+		}
+		else IN2 = getPinVal(AIN1);
+		// PINY IN1 i IN2 wybrane
+		if(IN1>IN2){
+				setIORegister(A_ACSR_ADDRESS,ACSR |=   ACO); // USTAW ACO
+			}
+		else    
+			{
+				setIORegister(A_ACSR_ADDRESS,ACSR &= ~(ACO)); // ZERUJ ACO
+			}
+		
+	}else printf("	Modul nie dziala\n");
+	
+	
+}
 
 
 

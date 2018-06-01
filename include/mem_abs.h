@@ -48,6 +48,12 @@
 	#define	ACBG 	0x40
 	#define	ACD 	0x80
 
+#define ADCSRA_ADDRESS 0x7A
+	#define ADEN 0x80
+#define ADCSRB_ADDRESS 0x7b
+	#define ACME 0x40
+#define ADMUX_ADDRESS 0x7C
+	
 #define DIDR1_ADDRESS	0x7F //Digital Input Disable Register 1
 	#define AIN0D 0x00
 	#define AIN1D 0x01

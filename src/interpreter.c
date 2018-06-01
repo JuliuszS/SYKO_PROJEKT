@@ -20,6 +20,8 @@ void F_G11(void);
 void F_G12(void);
 
 // deklaracje instrukcji
+void F_IN(void);
+void F_STS(void);
 void F_ADD(void);
 void F_JMP(void);
 void F_RJMP(void);
@@ -124,8 +126,7 @@ void F_G10(void)
 {
 	 CodeType T=getOpcode() & 0x0FFF;
 
-		if((T & JMP_MASK) == JMP_VAL) 
-		 F_JMP(); // DZIALA
+		if((T & JMP_MASK) == JMP_VAL) F_JMP(); 
 	 else 
 		 if((T&ICALL_MASK) == ICALL_VAL) F_ICALL();
 	 else 
@@ -135,6 +136,8 @@ void F_G10(void)
 	 else 
 		 if((T&ASR_MASK) == ASR_VAL) F_ASR();
 	 else
+		 if((T&STS_MASK) == STS_VAL) F_STS();
+	 else
 		 NoInstr();
 }
 
@@ -142,8 +145,9 @@ void F_G11(void)
 {
 		CodeType T=getOpcode() & 0x0FFF;
 		
-		if((T&OUT_MASK)== OUT_VAL) 
-			F_OUT();
+			if((T&OUT_MASK)== OUT_VAL) F_OUT();
+		else
+			if((T&IN_MASK)== IN_VAL) F_IN();
 		else 
 			NoInstr();
 	
