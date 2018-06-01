@@ -5,6 +5,7 @@
 
 #include "types.h"
 #include "periph.h"
+#include "mem_abs.h"
 
 #define MAX_LINE_SIZE 30 
 #define SEPARATOR ','
@@ -14,16 +15,22 @@
 	Zmiany stanow pinow sa przechowywane wg
     czasowego ich wystepowania, na stosie w 
 	postaci struktur zawierajacych czas pin 
-	oraz wartość zmiany
+	oraz wartość docelowa na pinie. Obecny stanow
+	jest przechowywany w oddzielnej tablicy
 */
 
+
+
 //**********************************************
 //
-// DEKLARACJA STOSU 
+// DEKLARACJA STOSU I TABLICY STANU
 //
 //**********************************************
 
-struct PinState * PinsTab = NULL;
+// Tablica stanu
+float PinsCurrentVal[NUMBERS_OF_PINS];
+// Stos
+struct PinState * PinsTabChange = NULL;
 int PinsTabStack;
 int PinsTabSize;
 
@@ -35,8 +42,8 @@ int PinsTabSize;
 
 void periphFree(void)
 {
-	if(PinsTab != NULL) free(PinsTab);
-	PinsTab = NULL;
+	if(PinsTabChange != NULL) free(PinsTabChange);
+	PinsTabChange = NULL;
 }
 
 //**********************************************
@@ -47,9 +54,9 @@ void periphFree(void)
 
 void periphNewPtr(struct PinState* New_ptr)
 {
-	if(PinsTab != NULL) free(PinsTab);
+	if(PinsTabChange != NULL) free(PinsTabChange);
 	
-	PinsTab = New_ptr;
+	PinsTabChange = New_ptr;
 	PinsTabSize = 1;
 	PinsTabStack = 0;
 }
@@ -64,11 +71,34 @@ struct PinState periphPULL(void)
 {
 	if(PinsTabStack == 0)
 	{
-		printf("Periph Stack Error\n");
+		printf("Periph Stack Error in PULL\n");
 		exit(-1);
 	}
 	PinsTabStack--;
-	return PinsTab[PinsTabStack];
+	return PinsTabChange[PinsTabStack];
+}
+//**********************************************
+//
+// Pobierz stempel czasowy najwyższej struktury na stosie
+//
+//**********************************************
+CounterType getFirstElementTime(void){
+	if(PinsTabStack == 0)
+	{	
+		//printf("FirstElementTime: No more elements\n");
+		return 0;
+	}
+	return PinsTabChange[PinsTabStack-1].change_time;
+}
+
+//**********************************************
+//
+// Pusty Stos
+//
+//**********************************************
+int periphIsStackEmpty(void){
+	if(PinsTabStack == 0) return 1;
+	else return 0;
 }
 
 //**********************************************
@@ -79,14 +109,14 @@ struct PinState periphPULL(void)
 
 void periphPUSH(struct PinState state)
 {
-	PinsTab[PinsTabStack] = state;
+	PinsTabChange[PinsTabStack] = state;
 	// Gdy tablica za mala
 	if(PinsTabStack == (PinsTabSize-1)){ 
 			PinsTabSize = 2*PinsTabSize;
-			PinsTab = (struct PinState*)realloc(PinsTab, PinsTabSize*( sizeof(struct PinState)) );
+			PinsTabChange = (struct PinState*)realloc(PinsTabChange, PinsTabSize*( sizeof(struct PinState)) );
 			
-			if(PinsTab == NULL){
-				printf("Stack ERROR\n");
+			if(PinsTabChange == NULL){
+				printf("Stack ERROR in PUSH\n");
 				exit(-1);
 			}
 		}
@@ -99,7 +129,7 @@ void periphPUSH(struct PinState state)
 //
 //**********************************************
 void periphStackTimeSort(void){
-	qsort(PinsTab, (size_t)(PinsTabStack+1), sizeof(struct PinState), time_compare);
+	qsort(PinsTabChange, (size_t)(PinsTabStack), sizeof(struct PinState), time_compare);
 }
 
 int time_compare( const void * el_1, const void * el_2)
@@ -107,8 +137,8 @@ int time_compare( const void * el_1, const void * el_2)
 	const struct PinState* elem1 = (const struct PinState*) el_1;
 	const struct PinState* elem2 = (const struct PinState*) el_2;
 	
-	if(elem1->change_time < elem2->change_time) return -1;
-		else if(elem1->change_time > elem2->change_time) return 1;
+	if(elem1->change_time > elem2->change_time) return -1;
+		else if(elem1->change_time < elem2->change_time) return 1;
 		else if(elem1->change_time == elem2->change_time) return 0;
 }
 
@@ -187,7 +217,7 @@ struct PinState strtoPinStruct(char* line){
 	int i = 0;
 	for(i = 0; PinsTabStack != i ;i++)
 	 {	 
-	printf("%d-> %d: %d, %f\n",i,  PinsTab[i].change_time  ,  PinsTab[i].pin_number  ,  PinsTab[i].pin_val  ); 		 
+	printf("%d-> %d: %d, %f\n",i,  PinsTabChange[i].change_time  ,  PinsTabChange[i].pin_number  ,  PinsTabChange[i].pin_val  ); 		 
 	 }
  }
  
@@ -205,14 +235,36 @@ void loadPeriph_ERROR(char* info){
  
 //**********************************************
 //
-// String na strukture 
+// Symulacja działania modułów sprzętowych procesora 
 //
 //**********************************************
 
-/*
-void do_periph(void){
+void do_periph(const CounterType time){
+	struct PinState pin_ch;
+
+	// **** Aktualizacja wartości na pinach ****
+	if(periphIsStackEmpty() == 0)// Gdy stos niepusty
+	{
+		// Pobieranie nowych stanów na pinach
+		while(time == getFirstElementTime())
+		{
+			pin_ch = periphPULL();
+			PinsCurrentVal[pin_ch.pin_number] = pin_ch.pin_val;
+		}
+	}
 	
+	// **** Działanie sprzętu ****
+	do_AnalogComparator();		
+
 	
-	
-}
-*/
+	}
+
+//******************************************
+//
+// Symulacja działanie Analog Comparatora
+//
+//******************************************
+void do_AnalogComparator(void){0;}
+
+
+

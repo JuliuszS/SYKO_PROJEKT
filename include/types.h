@@ -7,24 +7,35 @@ typedef unsigned short              CodeType;
 typedef unsigned short              AddressType;
 typedef unsigned long               CounterType;
 
+//*****************************************************
+//
+// Informacje o zmianie stanu na pinie
+//
+//*****************************************************
+
 struct PinState{
 	int pin_number;
 	float pin_val;
 	CounterType change_time;
 };
 
+//*****************************************************
+//
+// unie do konwersji bit_bit zmiennych sign i usign
+//
+//*****************************************************
+
 union bits{
 	unsigned char unsign;
 	signed char sign;
 };
-
 union word_bits{
 	unsigned short unsign;
 	signed short sign;
 };
 
-
-//najwieksze wartosci 
+//*****************************************************
+//najwieksze wartosci danych i adresów
 #define MAX_ADDRESS                 0xFFFF
 #define MAX_DATA_VAL                0xFF
 

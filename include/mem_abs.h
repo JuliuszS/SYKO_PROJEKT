@@ -1,18 +1,69 @@
 #ifndef __MEM_ABS_H__
 #define __MEM_ABS_H__
-#include "types.h"
 
+#include "types.h"
 
 #define FILE_COUNTER            "test/file_counter.bin"
 #define FILE_PC                 "test/file_pc.bin"
 #define FILE_DATA               "test/file_data.bin"
 #define FILE_CODE               "test/file_code.bin"
 
+//********************************************************
+//
+// Definicje adresow i bitow rejestrow
+//
+//********************************************************
 
+//Bity SREG
+#define FLAG_C                      0
+#define FLAG_Z						1
+#define FLAG_N						2
+#define FLAG_V						3
+#define FLAG_S						4
+#define FLAG_H						5
+#define FLAG_T						6
+#define FLAG_I						7
+
+//********************************
+//
+// Stack pointer A_SPH A_SPL
+// ADRES I/O
+//
+//********************************
+#define A_SPL 0x3D
+#define A_SPH 0x3E
+
+//********************************
+//
+// Rejestry Analog Comparatora
+//
+//********************************
+#define	A_ACSR_ADDRESS	0x30//Analog Comparator Control and Status Register
+	#define	ACIS0 	0x01
+	#define	ACIS1 	0x02
+	#define	ACIC 	0x04
+	#define	ACIE 	0x08
+	#define	ACI 	0x10
+	#define	ACO 	0x20
+	#define	ACBG 	0x40
+	#define	ACD 	0x80
+
+#define DIDR1_ADDRESS	0x7F //Digital Input Disable Register 1
+	#define AIN0D 0x00
+	#define AIN1D 0x01
+
+//*********************************
+//
+// Deklaracje funkcji
+//
+//*********************************	
+
+// Wyświetlanie danych o pamieci
 void dumpMEMConfiguration(void);
 void saveCPUState(void);
 void loadCounter(char *file);
 
+// Ładowanie i zapis pamieci
 void loadPC(char *file);
 void savePC(char *file);
 void loadMEMC(char *file);
@@ -63,40 +114,6 @@ AddressType getPOP_ADDRES(void);
 // Operacje na rejestrach IO
 DataType getIORegister(int n);
 void setIORegister(int n, DataType v);
-
-//********************************************************
-
-// Definicje adresow i bitow rejestrow
-
-//Bity SREG
-#define FLAG_C                      0
-#define FLAG_Z						1
-#define FLAG_N						2
-#define FLAG_V						3
-#define FLAG_S						4
-#define FLAG_H						5
-#define FLAG_T						6
-#define FLAG_I						7
-
-// Stack pointer A_SPH A_SPL
-#define A_SPL 0x3D
-#define A_SPH 0x3E
-
-//Rejestry Analog Comparatora
-
-#define	ACSR_ADDRESS	0x50//Analog Comparator Control and Status Register
-	#define	ACIS0 	0x01
-	#define	ACIS1 	0x02
-	#define	ACIC 	0x04
-	#define	ACIE 	0x08
-	#define	ACI 	0x10
-	#define	ACO 	0x20
-	#define	ACBG 	0x40
-	#define	ACD 	0x80
-
-#define DIDR1_ADDRESS	0x7F //Digital Input Disable Register 1
-	#define AIN0D 0x00
-	#define AIN1D 0x01
 
 #endif //__MEM_ABS_H__
 

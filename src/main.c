@@ -21,6 +21,9 @@ int main(int argc, char *argv[]) {
     long int_gen=-1;
     CodeType T;                         //zmienna pomocnicza - ma przechowywaæ opcode instrukcji
 
+	
+//**************************************************
+// Pomocnicze instrukcje resetuj¹ce pliki PC i COUNTER
 	if(argc>1){
 		if(strcmp(argv[1],"SIM=0") == 0)
 			{
@@ -49,7 +52,8 @@ int main(int argc, char *argv[]) {
 			 exit(0);
 			}
 	}
-	
+//**************************************************
+// £adowanie Pamiêci
     loadMEMC(FILE_CODE);                //£adowanie pamiêci kodu z pliku
     loadMEMD(FILE_DATA);                //£adowanie pamiêci danych z pliku (w tym rejestrówm)
     loadPC(FILE_PC);                    //£adowanie wartoœci PC
@@ -62,40 +66,50 @@ int main(int argc, char *argv[]) {
     */
 	dumpMEMConfiguration();
 
-    if(argc>1){	                        //pierwszy parametr wywolania okresla liczbe instrukcji do wykonania
-		max_counter=strtoul(argv[1], NULL, 10);
-        max_counter+=getCounter();
-    }
-    if(max_counter==0){
-        max_counter=getCounter()+1;     //nie podanie argumentu wywolania lub b³edne jego podanie - ustala wykonanie jednego cyklu
-    }
-    if(argc>2){        
-	//drugi parametr wywolania okresla liczbe instrukcji po ktorych ma byc wygenerowane przerwanie
-        int_gen=strtoul(argv[2], NULL, 10);
-    }
-    if(int_gen==0){
-        int_gen=-1;                     //nie podanie argumentu wywolania lub b³edne jego podanie - ustala wykonanie jednej instrukcji
-    }
-    if(int_gen>0)
-        set_intterrupt(int_gen);        //zapamietaj kiedy wywolac przerwanie
 	
-		
+//**************************************************
+// Argumenty wywo³anie symulacji  
+	if(argc>1)
+		{	                        //pierwszy parametr wywolania okresla liczbe instrukcji do wykonania
+		 max_counter=strtoul(argv[1], NULL, 10);
+		 max_counter+=getCounter();
+		}
+	if(max_counter==0)
+		{	
+		 max_counter=getCounter()+1;     //nie podanie argumentu wywolania lub b³edne jego podanie - ustala wykonanie jednego cyklu
+		}
+    if(argc>2)
+		{ 
+		//drugi parametr wywolania okresla liczbe instrukcji po ktorych ma byc wygenerowane przerwanie
+		 int_gen=strtoul(argv[2], NULL, 10);
+		}
+    if(int_gen==0)
+		{
+		 int_gen=-1;                     //nie podanie argumentu wywolania lub b³edne jego podanie - ustala wykonanie jednej instrukcji
+		}
+    if(int_gen>0)
+		 set_intterrupt(int_gen);        //zapamietaj kiedy wywolac przerwanie
+	 
+//**************************************************
+// Rozpoczêcie pracy	
 	printf("---------------------- START ----------------------------\r\n");
-    for(;;){
-	   //do_periph(); // Dzialanie perypetiow -> TODO
-   	    T=getOpcode();                  //T=opcode operacji (w³¹cznie z arg. wbudowanym)
-        doInstr(T);                     //wykonaj instrukcje
-        checkInterrupt(getCounter());   //sprawdŸ czy trzeba wygenerowac przerwanie
+    for(;;)
+	{
+		do_periph(getCounter()); // Dzia³anie modu³ów sprzêtowych 
+		T=getOpcode();                  //T=opcode operacji (w³¹cznie z arg. wbudowanym)
+		doInstr(T);                     //wykonaj instrukcje
+		checkInterrupt(getCounter());   //sprawdŸ czy trzeba wygenerowac przerwanie
 
-        if(getCounter()>=max_counter){  //czy wykonano zadan¹ liczbê cykli
+		if(getCounter()>=max_counter)  // czy wykonano zadan¹ liczbê cykli
+		{  
 			saveCPUState();
 			periphFree();	
 			printf("Nacisnij ENTER by zakonczyc: return 0\n");
 			getchar();
-            return 0;
-        }
-    }
-
+			return 0;
+		}
+	}
+	
     printf("Bledne wykonanie emulacji (PC=0x%08lx, T=0x%08lx)\r\n", getPC(), T);
 	printf("Nacisnij ENTER by zakonczyc\n");
 	getchar();

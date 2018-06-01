@@ -8,6 +8,7 @@
 
 // Nieznana instrukcja
 void NoInstr(void);
+// Zapis stanu procesora
 void saveCPUState(void);
 
 // deklaracje F_Gx()
@@ -33,7 +34,11 @@ void F_NEG(void);
 void F_ASR(void);
 void F_RCALL(void);
 
-
+//**************************************************
+//
+//	Dekoder rozkazów odnajdujê w³aœciw¹ instrukcje
+//
+//**************************************************
 void doInstr(CodeType T){
     switch((T & 0xF000)>>12){   //wy³uskanie w³aœciwego kodu operacji (4 najwyzsze bity)
 	   case ID_G1:
@@ -66,6 +71,11 @@ void doInstr(CodeType T){
     }
 }
 
+//**************************************************
+//
+//	B³¹d nieznanej instrukcji
+//
+//**************************************************
 void NoInstr(void)
 {
 	printf("---------------------------------------------------------\r\n");
@@ -73,6 +83,13 @@ void NoInstr(void)
     saveCPUState();
     exit(-1);
 }
+
+
+//**************************************************
+//
+//			Fukcje dekoduj¹ce dalsze bity
+//
+//**************************************************
 
 void F_G1(void)
 {
