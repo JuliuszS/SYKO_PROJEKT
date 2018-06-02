@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-#define NUMBERS_OF_PINS 38
+#define NUMBERS_OF_PINS 28 // DIP 28
 
 //***********************************
 //

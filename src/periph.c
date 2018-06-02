@@ -379,7 +379,7 @@ void do_AnalogComparator(void){
 				setIORegister(A_ACSR_ADDRESS,ACSR &= ~(ACO)); // ZERUJ ACO
 			}
 		
-	}else printf("	Modul nie dziala\n");
+	}
 	
 	
 }
