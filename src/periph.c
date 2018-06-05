@@ -306,11 +306,18 @@ void do_periph(const CounterType time){
 	if(periphIsStackEmpty() == 0)// Gdy stos niepusty
 	{
 		// Pobieranie nowych stanów na pinach
-		while(time == getFirstElementTime())
+		while(time >= getFirstElementTime())
 		{
-			if(periphIsStackEmpty()) break; // Gdy stos sie opróżnił
-			pin_ch = periphPULL();
-			PinsCurrentVal[(pin_ch.pin_number)-1] = pin_ch.pin_val;
+			// Wyrzucanie starych zmian
+			if(time > getFirstElementTime()) periphPULL();
+			else if(time == getFirstElementTime())
+			{
+				// Zmiana stanu na pinie
+				if(periphIsStackEmpty()) break; // Gdy stos sie opróżnił
+				pin_ch = periphPULL();
+				PinsCurrentVal[(pin_ch.pin_number)-1] = pin_ch.pin_val;
+			}
+			if(periphIsStackEmpty()) break;
 		}
 	}
 	
