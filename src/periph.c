@@ -141,6 +141,7 @@ void periphPUSH(struct PinState state)
 //
 //**********************************************
 void periphStackTimeSort(void){
+	
 	qsort(PinsTabChange, (size_t)(PinsTabStack), sizeof(struct PinState), time_compare);
 }
 
@@ -196,15 +197,16 @@ void loadPeriph(char *filename){
 //
 //**********************************************
 void loadPeriphCurrent(char *file){       
-    int file_ptr;
+	int file_ptr;
     file_ptr=open(file, O_RDWR | O_BINARY, 0);
     if(file_ptr<0){
         printf("Periph Current file not found (%s)!\n", file);
         exit(-4);
     }    
     lseek(file_ptr, 0, SEEK_SET);
-    printf("Read Periph (%s) file in %dbytes\n", file, read(file_ptr, (void*)PinsCurrentVal, sizeof(float)*(NUMBERS_OF_PINS+1)));
-    close(file_ptr);
+	printf("Read Periph (%s) file in %dbytes\n", file, read(file_ptr, (void*)PinsCurrentVal, sizeof(float)*(NUMBERS_OF_PINS)));
+    
+	close(file_ptr);
 }
 
 //**********************************************

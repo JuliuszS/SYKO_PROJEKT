@@ -58,7 +58,11 @@ int main(int argc, char *argv[]) {
     loadMEMD(FILE_DATA);                //£adowanie pamiêci danych z pliku (w tym rejestrówm)
     loadPC(FILE_PC);                    //£adowanie wartoœci PC
     loadCounter(FILE_COUNTER);          //£adowanie licznika cykli
+	
+	
 	loadPeriph(FILE_PERIPH);			//£adowanie wartoœci napiêcia na pinach
+ 
+	// TO FUNKCJA PONIZEJ
 	loadPeriphCurrent(FILE_PERIPH_CURRENT);
 	
 	

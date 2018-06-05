@@ -38,7 +38,6 @@ float getPinVal(int pin_number);
 // Działanie sprzętowych modułów
 void do_periph(CounterType time);
 void do_AnalogComparator(void);
-
 // -------- STOS ---------------
 // Czy stos pusty
 int periphIsStackEmpty(void);
@@ -57,5 +56,6 @@ struct PinState strtoPinStruct(char* line);
 void periphStackTimeSort(void);
 int time_compare(const void *,const void *);
 void loadPeriph_ERROR(char* info);
+void printfPinsCurrentValTab(void);
 
 #endif
