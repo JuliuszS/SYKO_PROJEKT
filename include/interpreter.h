@@ -79,7 +79,7 @@ void doInstr(CodeType T);
 #define RETI_MASK 0x0FFF
 #define RETI_VAL 0x0518
 
-#define SEI_MAKS 0xFFFF
+#define SEI_MASK 0xFFFF
 #define SEI_VAL 0x0478
 
 #define CLI_MASK 0xFFFF

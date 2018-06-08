@@ -1,6 +1,7 @@
 # Ignoruj pliki:
 *.exe
 *.[oa]
+*.bak
 *~
 
 

@@ -82,17 +82,7 @@ int main(int argc, char *argv[]) {
 		{	
 		 max_counter=getCounter()+1;     //nie podanie argumentu wywolania lub b³edne jego podanie - ustala wykonanie jednego cyklu
 		}
-    if(argc>2)
-		{ 
-		//drugi parametr wywolania okresla liczbe instrukcji po ktorych ma byc wygenerowane przerwanie
-		 int_gen=strtoul(argv[2], NULL, 10);
-		}
-    if(int_gen==0)
-		{
-		 int_gen=-1;                     //nie podanie argumentu wywolania lub b³edne jego podanie - ustala wykonanie jednej instrukcji
-		}
-    if(int_gen>0)
-		 set_intterrupt(int_gen);        //zapamietaj kiedy wywolac przerwanie
+
 	 
 //**************************************************
 // Rozpoczêcie pracy	
@@ -102,8 +92,8 @@ int main(int argc, char *argv[]) {
 		do_periph(getCounter()); // Dzia³anie modu³ów sprzêtowych 
 		T=getOpcode();                  //T=opcode operacji (w³¹cznie z arg. wbudowanym)
 		doInstr(T);                     //wykonaj instrukcje
-		checkInterrupt(getCounter());   //sprawdŸ czy trzeba wygenerowac przerwanie
-
+		checkInterrupt();   //sprawdŸ czy trzeba wygenerowac przerwanie
+		
 		if(getCounter()>=max_counter)  // czy wykonano zadan¹ liczbê cykli
 		{  
 			printf("---  END  ---\r\n");

@@ -100,7 +100,7 @@ void setRegister(int n, DataType v);
 // Sterowanie rejestrem flag
 void setFlagsRegister(int b);
 void resetFlagsRegister(int b);
-int getFlagsRegister(int b);
+DataType getFlagsRegister(int b);
 
 // Zapis do pamieci
 void setMEMD(DataType d,AddressType p);

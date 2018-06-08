@@ -38,6 +38,7 @@ float getPinVal(int pin_number);
 // Działanie sprzętowych modułów
 void do_periph(CounterType time);
 void do_AnalogComparator(void);
+void do_AnalogComparator_SelectInput(float *IN1,float *IN2);
 // -------- STOS ---------------
 // Czy stos pusty
 int periphIsStackEmpty(void);
@@ -52,10 +53,15 @@ struct PinState periphPULL(void);
 // Dodaj nowy el 
 void periphPUSH(struct PinState state);
 // -----------------------------
+// Zamienia stringa na strukture zmiany stanu pinu
 struct PinState strtoPinStruct(char* line);
+// Sortowanie stosu zmian 
 void periphStackTimeSort(void);
+// Porównanie czasów zmian
 int time_compare(const void *,const void *);
+// Błąd ładowania danych
 void loadPeriph_ERROR(char* info);
+// Wypisz obecny stan na pinach
 void printfPinsCurrentValTab(void);
 
 #endif

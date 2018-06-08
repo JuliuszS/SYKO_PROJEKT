@@ -2,7 +2,7 @@
 #include "types.h"
 #include "mem_abs.h"
 
-void F_SEI(void){
+void F_CLI(void){
     // resetuj Interrupt Enable
 	 resetFlagsRegister(FLAG_I);
 	

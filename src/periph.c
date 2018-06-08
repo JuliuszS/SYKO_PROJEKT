@@ -15,7 +15,7 @@
 	Zmiany stanow pinow sa przechowywane wg
     czasowego ich wystepowania, na stosie w 
 	postaci struktur zawierajacych czas pin 
-	oraz wartość docelowa na pinie. Obecny stanow
+	oraz wartość docelowa na pinie. Obecny stan pinow
 	jest przechowywany w oddzielnej tablicy
 */
 
@@ -327,71 +327,115 @@ void do_periph(const CounterType time){
 
 //******************************************
 //
-// Symulacja działanie Analog Comparatora
+// Wybór wejścia Analog Comparatora
 //
 //******************************************
-void do_AnalogComparator(void){
-	
+void do_AnalogComparator_SelectInput(float* IN1,float* IN2){
 	DataType ACSR = getIORegister(A_ACSR_ADDRESS);
+	DataType ADCSRB = getMEMD(ADCSRB_ADDRESS);
+	DataType ADCSRA = getMEMD(ADCSRA_ADDRESS);
+	DataType DIDR1 = getMEMD(DIDR1_ADDRESS);
+		
+		// IN 1 *****************
+		if(ACSR&ACBG) *IN1 = 0; // Bandgap voltage
+		else *IN1 = getPinVal(AIN0); // PIN AIN0
+		//***********************
+		
+		
+		// IN 2 *****************
+		if(ADCSRB&ACME)
+		{
+			if(ADCSRA&ADEN) 
+				*IN2 = getPinVal(AIN1);
+			else
+			{
+				DataType MUX = 0x07&getMEMD(ADMUX_ADDRESS);
+				switch(MUX){
+					case 0x00:
+						*IN2 = getPinVal(ADC0);
+						break;
+					case 0x01:
+						*IN2 = getPinVal(ADC1);
+						break;
+					case 0x02:
+						*IN2 = getPinVal(ADC2);
+						break;
+					case 0x03:
+						*IN2 = getPinVal(ADC3);
+						break;
+					case 0x04:
+						*IN2 = getPinVal(ADC4);
+						break;
+					case 0x05:
+						*IN2 = getPinVal(ADC5);
+						break;
+					case 0x06:
+						*IN2 = getPinVal(ADC6);
+						break;
+					case 0x07:
+						*IN2 = getPinVal(ADC7);
+				}
+			}
+		}
+		else *IN2 = getPinVal(AIN1);
+
+}
+
+//******************************************
+//
+// Symulacja działania Analog Comparatora
+//
+//******************************************
+
+void do_AnalogComparator(void){
+	DataType OldACSR = getIORegister(A_ACSR_ADDRESS);
+	DataType NewACSR = OldACSR;
+	
 	DataType ADCSRB = getMEMD(ADCSRB_ADDRESS);
 	DataType ADCSRA = getMEMD(ADCSRA_ADDRESS);
 	DataType DIDR1 = getMEMD(DIDR1_ADDRESS);
 	
 	float IN1, IN2;
 	
-	if((ACSR&ACD) == 0){// Czy moduł wyłączony?
-		// IN 1
-		if(ACSR&ACBG) IN1 = 0; // Bandgap voltage
-		else IN1 = getPinVal(AIN0); // PIN AIN0
-		// IN 2
-		if(ADCSRB&ACME)
-		{
-			if(ADCSRA&ADEN) 
-				IN2 = getPinVal(AIN1);
-			else
-			{
-				DataType MUX = 0x07&getMEMD(ADMUX_ADDRESS);
-				switch(MUX){
-					case 0x00:
-						IN2 = getPinVal(ADC0);
-						break;
-					case 0x01:
-						IN2 = getPinVal(ADC1);
-						break;
-					case 0x02:
-						IN2 = getPinVal(ADC2);
-						break;
-					case 0x03:
-						IN2 = getPinVal(ADC3);
-						break;
-					case 0x04:
-						IN2 = getPinVal(ADC4);
-						break;
-					case 0x05:
-						IN2 = getPinVal(ADC5);
-						break;
-					case 0x06:
-						IN2 = getPinVal(ADC6);
-						break;
-					case 0x07:
-						IN2 = getPinVal(ADC7);
-				}
-			}
-		}
-		else IN2 = getPinVal(AIN1);
+	if((OldACSR&ACD) == 0){// Czy moduł wyłączony?
+	
+		// Pobierz wartości z wejść
+		do_AnalogComparator_SelectInput(&IN1,&IN2);
+	
 		// PINY IN1 i IN2 wybrane
-		if(IN1>IN2){
-				setIORegister(A_ACSR_ADDRESS,ACSR |=   ACO); // USTAW ACO
-			}
-		else    
-			{
-				setIORegister(A_ACSR_ADDRESS,ACSR &= ~(ACO)); // ZERUJ ACO
-			}
+		if(IN1>IN2)	NewACSR |=   ACO; // USTAW ACO
+			else    NewACSR &= ~(ACO); // ZERUJ ACO
 		
-	}
+		
+		DataType NewACO = (NewACSR&ACO)>>5;
+		DataType OldACO = (OldACSR&ACO)>>5;
+			
+		DataType ACISx = OldACSR&0x03; // Maskujemy ACSR	
+		// Wybór odpowiedniego zdarzenia
+		switch(ACISx)
+		{
+			case 0x00:
+				if(NewACO != OldACO) NewACSR |= ACI; // Ustawienie flagi przerwania
+				break;
+			case 0x01:
+				// !! RESERVED NOP...
+				break;
+			case 0x02:
+				if(NewACO < OldACO) NewACSR |= ACI;
+				break;
+			case 0x03:
+				if(NewACO > OldACO) NewACSR |= ACI;
+				break;
+			default:
+				printf("ACISx Error in do_AnalogComparator\n");
+		}
 	
+	setIORegister(A_ACSR_ADDRESS, NewACSR); // USTAWIENIE NOWEGO ACSR 
 	
-}
+	}  // END IF Czy włączony
+}// END do_AnalogComparator
+
+
 
 
 

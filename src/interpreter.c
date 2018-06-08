@@ -36,6 +36,9 @@ void F_MUL(void);
 void F_NEG(void);
 void F_ASR(void);
 void F_RCALL(void);
+void F_CLI(void);
+void F_SEI(void);
+
 
 //**************************************************
 //

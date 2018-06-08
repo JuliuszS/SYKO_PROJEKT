@@ -419,7 +419,7 @@ void resetFlagsRegister(int b){
 // Pobierz bit rejestru flag
 //
 //*****************************************************
-int getFlagsRegister(int b){
-    return FLAGS & (1<<b);
+DataType getFlagsRegister(int b){
+    return FLAGS & (DataType)(1<<b);
 }
 
