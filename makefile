@@ -22,7 +22,8 @@ CMD_OBJ = f_add.o  f_jmp.o \
 		  f_neg.o  f_ldi.o \
 		  f_out.o f_icall.o\
 		  f_rcall.o f_sts.o\
-		  f_in.o
+		  f_in.o f_sei.o \ 
+		  f_reti.o f_cli.o
 # CELE
 
 do_sim: main.o interpreter.o interrupt.o mem_abs.o periph.o $(CMD_OBJ)

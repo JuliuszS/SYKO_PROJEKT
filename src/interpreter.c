@@ -20,6 +20,7 @@ void F_G11(void);
 void F_G12(void);
 
 // deklaracje instrukcji
+void F_RETI(void);
 void F_IN(void);
 void F_STS(void);
 void F_ADD(void);
@@ -138,7 +139,14 @@ void F_G10(void)
 	 else
 		 if((T&STS_MASK) == STS_VAL) F_STS();
 	 else
+		 if((T&RETI_MASK) == RETI_VAL) F_RETI();
+	 else
+		 if((T&SEI_MASK) == SEI_VAL) F_SEI();
+	 else
+		 if((T&CLI_MASK) == CLI_VAL) F_CLI();
+	 else
 		 NoInstr();
+	 
 }
 
 void F_G11(void)
