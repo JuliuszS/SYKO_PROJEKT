@@ -7,6 +7,7 @@
 #define FILE_PC                 "test/file_pc.bin"
 #define FILE_DATA               "test/file_data.bin"
 #define FILE_CODE               "test/file_code.bin"
+#define FILE_FLAGS				"test/file_flags.bin"
 
 //********************************************************
 //
@@ -77,6 +78,8 @@ void loadMEMD(char *file);
 void saveMEMD(char *file);
 void saveCounter(char *file);
 void loadCounter(char *file);
+void saveFlagsRegister(char * file);
+void loadFlagsRegister(char * file);
 
 // Pobieranie pamieci
 CodeType getMEMC(AddressType p);

@@ -36,7 +36,7 @@ int checkAC_Interrupt(void){
 	AddressType adr;
 	
 	// Zachodzi przerwanie
-	if( (ACSR&ACIE) && ACSR&ACI)
+	if( (ACSR&ACIE) && (ACSR&ACI))
 	{
 		printf("AC Interrupt:\n");
 		// Wepchnij na stos adres powrotu

@@ -72,9 +72,49 @@ void dumpMEMConfiguration(void){
 //*****************************************************
 
 void saveCPUState(void){
-	saveMEMD(FILE_DATA);        //Zapisz zawartoœæ pamiêci danych do pliku
-    savePC(FILE_PC);            //Zapisz wartoœc PC
-    saveCounter(FILE_COUNTER);  //Zapisz liczbe wykonanych cykli
+	saveMEMD(FILE_DATA);        	//Zapisz zawartoœæ pamiêci danych do pliku
+    savePC(FILE_PC);            	//Zapisz wartoœc PC
+    saveCounter(FILE_COUNTER);  	//Zapisz liczbe wykonanych cykli
+	saveFlagsRegister(FILE_FLAGS);	//Zapis rejestru flag
+}
+
+//*****************************************************
+//
+// £adowanie rejestru flag
+//
+//*****************************************************
+
+void loadFlagsRegister(char * file){
+	int file_ptr;
+    file_ptr=open(file, O_RDWR | O_BINARY, 0);
+    if(file_ptr<0){
+        printf("FLAGS file not found (%s)!\n", file);
+        exit(-2);
+    }
+    lseek(file_ptr, 0, SEEK_SET);
+    printf("FLAGS file (%s) in %dbytes ", file, read(file_ptr, &FLAGS, sizeof(DataType)));
+    printf("[FLAGS=0x%X]\n", FLAGS);
+    close(file_ptr);
+	
+}
+
+//*****************************************************
+//
+// Zapis rejestru flag
+//
+//*****************************************************
+
+void saveFlagsRegister(char * file){
+	int file_ptr;
+    DataType tFLAGS=FLAGS;
+    file_ptr=open(file, O_RDWR | O_BINARY, 0);
+    if(file_ptr<0){
+        printf("FLAGS cannot open to write (%s)!\n", file);
+        exit(-5);
+    }    
+    lseek(file_ptr, 0, SEEK_SET);
+    printf("Write FLAGS (%s) file in %dbytes [PC=0x%04X]\n", file, write(file_ptr, &FLAGS, sizeof(DataType)), FLAGS);
+    close(file_ptr);
 }
 
 //*****************************************************

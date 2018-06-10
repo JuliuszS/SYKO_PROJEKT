@@ -409,27 +409,28 @@ void do_AnalogComparator(void){
 		
 		DataType NewACO = (NewACSR&ACO)>>5;
 		DataType OldACO = (OldACSR&ACO)>>5;
-			
-		DataType ACISx = OldACSR&0x03; // Maskujemy ACSR	
-		// Wybór odpowiedniego zdarzenia
-		switch(ACISx)
-		{
-			case 0x00:
-				if(NewACO != OldACO) NewACSR |= ACI; // Ustawienie flagi przerwania
-				break;
-			case 0x01:
-				// !! RESERVED NOP...
-				break;
-			case 0x02:
-				if(NewACO < OldACO) NewACSR |= ACI;
-				break;
-			case 0x03:
-				if(NewACO > OldACO) NewACSR |= ACI;
-				break;
-			default:
-				printf("ACISx Error in do_AnalogComparator\n");
-		}
-	
+		
+		if(OldACSR&ACIE){
+			DataType ACISx = OldACSR&0x03; // Maskujemy ACSR	
+			// Wybór odpowiedniego zdarzenia
+			switch(ACISx)
+			{
+				case 0x00:
+					if(NewACO != OldACO) NewACSR |= ACI; // Ustawienie flagi przerwania
+					break;
+				case 0x01:
+					// !! RESERVED NOP...
+					break;
+				case 0x02:
+					if(NewACO < OldACO) NewACSR |= ACI;
+					break;
+				case 0x03:
+					if(NewACO > OldACO) NewACSR |= ACI;
+					break;
+				default:
+					printf("ACISx Error in do_AnalogComparator\n");
+			}
+		} 
 	setIORegister(A_ACSR_ADDRESS, NewACSR); // USTAWIENIE NOWEGO ACSR 
 	
 	}  // END IF Czy włączony

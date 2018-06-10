@@ -11,9 +11,8 @@ void F_EOR(void){
 	
 	DataType result = ((getRegister(Rr)^getRegister(Rd)) % MAX_DATA_VAL);
 	
-	
-	// nie wieM CZ OK FLAGI SO XDXDXDXDXD
-	// N,S FLAG
+
+	// FLAGA N
 	if(result&0x80)
 	{
 		setFlagsRegister(FLAG_N);
@@ -22,15 +21,17 @@ void F_EOR(void){
     else
 	{
         resetFlagsRegister(FLAG_N); 
-		resetFlagsRegister(FLAG_S);
+		resetFlagsRegister(FLAG_S); 
 	}
+	
 	// Z FLAG
 	if(result == 0)
         setFlagsRegister(FLAG_Z);               
     else
         resetFlagsRegister(FLAG_Z); 
 	
-	resetFlagsRegister(FLAG_V);
+	// Flaga V
+	resetFlagsRegister(FLAG_V); 
           
     setRegister(Rd, result);    //właściwe obliczenie
 

@@ -9,12 +9,6 @@
 #include "interrupt.h"
 #include "periph.h"
 
-#define FILE_COUNTER            "test/file_counter.bin"
-#define FILE_PC                 "test/file_pc.bin"
-#define FILE_DATA               "test/file_data.bin"
-#define FILE_CODE               "test/file_code.bin"
-#define FILE_PERIPH 			"test/file_periph.txt"
-#define FILE_PERIPH_CURRENT		"test/file_current_p.bin"
 
 
 int main(int argc, char *argv[]) {
@@ -58,7 +52,7 @@ int main(int argc, char *argv[]) {
     loadMEMD(FILE_DATA);                //£adowanie pamiêci danych z pliku (w tym rejestrówm)
     loadPC(FILE_PC);                    //£adowanie wartoœci PC
     loadCounter(FILE_COUNTER);          //£adowanie licznika cykli
-	
+	loadFlagsRegister(FILE_FLAGS);		//£adowanie rejestru flag
 	loadPeriph(FILE_PERIPH);			//£adowanie wartoœci napiêcia na pinach
 	loadPeriphCurrent(FILE_PERIPH_CURRENT);
 	

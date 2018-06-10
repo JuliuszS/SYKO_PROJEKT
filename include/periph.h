@@ -3,14 +3,20 @@
 
 #include "types.h"
 
+// Liczba pinów
 #define NUMBERS_OF_PINS 28 // DIP 28
+
+// Pliki perypetiow
+#define FILE_PERIPH 			"test/file_periph.txt"
+#define FILE_PERIPH_CURRENT		"test/file_current_p.bin"
+
 
 //***********************************
 //
 // Definicje numerów pinów
 //
 //***********************************
-// Założyona obudowa 28-pin PDIP
+// Założona obudowa 28-pin PDIP
 
 #define AIN0 12
 #define AIN1 13
