@@ -9,7 +9,7 @@ void F_NEG(void){
     printf("0x%04X[0x%04X]: NEG R%d\n", getPC(), getOpcode(), Rd);
 	
 	union bits result;
-	result.sign	= 0 - (signed char)getRegister(Rd);
+	result.sign	= 0 - (signed char)getRegister(Rd)-1;
 	
 	// H FLAG
 	if((result.unsign&0x8)>>3 + (getRegister(Rd)&0x8)>>3)

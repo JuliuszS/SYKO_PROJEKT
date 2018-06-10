@@ -95,7 +95,7 @@ void loadFlagsRegister(char * file){
     printf("FLAGS file (%s) in %dbytes ", file, read(file_ptr, &FLAGS, sizeof(DataType)));
     printf("[FLAGS=0x%X]\n", FLAGS);
     close(file_ptr);
-	
+	FlagsToSREG();	
 }
 
 //*****************************************************
@@ -115,7 +115,7 @@ void saveFlagsRegister(char * file){
     lseek(file_ptr, 0, SEEK_SET);
     printf("Write FLAGS (%s) file in %dbytes [PC=0x%04X]\n", file, write(file_ptr, &FLAGS, sizeof(DataType)), FLAGS);
     close(file_ptr);
-}
+	}
 
 //*****************************************************
 //
@@ -183,7 +183,7 @@ void loadMEMC(char *file){
 
 void loadMEMD(char *file){       
     int file_ptr;
-    file_ptr=open(file, O_RDWR | O_BINARY, 0);
+	file_ptr=open(file, O_RDWR | O_BINARY, 0);
     if(file_ptr<0){
         printf("MEMD file not found (%s)!\n", file);
         exit(-4);
@@ -239,7 +239,8 @@ void saveCounter(char *file){
 
 void saveMEMD(char *file){        
     int file_ptr;
-    file_ptr=open(file, O_RDWR | O_BINARY, 0);
+    FlagsToSREG();
+	file_ptr=open(file, O_RDWR | O_BINARY, 0);
     if(file_ptr<0){
         printf("MEMD cannot open to write (%s)!\n", file);
         exit(-6);
@@ -443,6 +444,7 @@ void setIORegister(int n, DataType v){
 //*****************************************************
 void setFlagsRegister(int b){
     FLAGS = FLAGS | (1<<b);
+	FlagsToSREG();
 }
 
 //*****************************************************
@@ -452,7 +454,8 @@ void setFlagsRegister(int b){
 //*****************************************************
 void resetFlagsRegister(int b){
     FLAGS = FLAGS & (~(1<<b));
-}
+	FlagsToSREG();
+	}
 
 //*****************************************************
 //
@@ -463,3 +466,12 @@ DataType getFlagsRegister(int b){
     return FLAGS & (DataType)(1<<b);
 }
 
+//*****************************************************
+//
+// Flags to SREG. Przepisanie wartoœci.
+//
+//*****************************************************
+
+void FlagsToSREG(void){
+	setIORegister(A_SREG_ADDRESS, FLAGS);
+}

@@ -14,7 +14,7 @@
 // Definicje adresow i bitow rejestrow
 //
 //********************************************************
-
+#define A_SREG_ADDRESS 0x3F // ADRES I/O rejestru SREG
 //Bity SREG
 #define FLAG_C                      0
 #define FLAG_Z						1
@@ -104,6 +104,8 @@ void setRegister(int n, DataType v);
 void setFlagsRegister(int b);
 void resetFlagsRegister(int b);
 DataType getFlagsRegister(int b);
+void FlagsToSREG(void);
+
 
 // Zapis do pamieci
 void setMEMD(DataType d,AddressType p);
