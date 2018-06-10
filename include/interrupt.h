@@ -39,7 +39,7 @@ int checkAC_Interrupt(void);
 #define  0x002A //ADC ADC Conversion Complete
 #define  0x002C //EE READY EEPROM Ready
 */
-#define AC_VECTOR  0x0017 //ANALOG COMP Analog Comparator
+#define AC_VECTOR  0x0030 //ANALOG COMP Analog Comparator
 
 //**************************************
 
